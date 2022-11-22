@@ -27,20 +27,15 @@ function AddTaskModal(props: { areaId: string }) {
     )
   }
 
-  const [open, setOpen] = React.useState(false)
+  const [showModal, setShowModal] = React.useState(false)
   const [newTaskName, setNewTaskName] = React.useState('')
+  const [isChecked, setCheck] = useState(true)
 
   const [taskInputs, setTaskInputs] = useState({
     cycleOption: cycleOptions.Days,
     cycleTime: '1',
     taskName: newTaskName,
   })
-
-  const [isChecked, setCheck] = useState(true)
-
-  const toggleCheck = () => {
-    setCheck(!isChecked)
-  }
 
   const getLastCompleted = () => {
     if (isChecked) {
@@ -56,11 +51,15 @@ function AddTaskModal(props: { areaId: string }) {
         bg={'gray.100'}
         variant={'subtle'}
         margin={'5px'}
-        onPress={() => setOpen(true)}
+        onPress={() => setShowModal(true)}
       >
         <Text>+</Text>
       </Button>
-      <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        safeAreaTop={true}
+      >
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
           <Modal.Header>Add Task</Modal.Header>
@@ -82,7 +81,9 @@ function AddTaskModal(props: { areaId: string }) {
               mt={'4'}
               mx={'4'}
               size={'md'}
-              onChange={toggleCheck}
+              onChange={(value) => {
+                setCheck(value)
+              }}
             >
               Mark Completed Today
             </Checkbox>
@@ -91,13 +92,13 @@ function AddTaskModal(props: { areaId: string }) {
             <Button
               paddingX={'20'}
               onPress={() => {
+                setShowModal(false)
                 addNewTask(
                   newTaskName,
                   getLengthInDays(taskInputs.cycleOption, taskInputs.cycleTime),
                   getLastCompleted()
                 )
                 setNewTaskName('')
-                setOpen(false)
               }}
             >
               Save
