@@ -4,10 +4,10 @@
     "slug": "chore-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "/public/assets/icon.png",
+    "icon": "./public/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "/public/assets/splash.png",
+      "image": "./public/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

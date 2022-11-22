@@ -50,11 +50,9 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     taskName: props.task.name,
   })
 
-  const setDate = (event: DateTimePickerEvent, date: Date) => {
-    if (event.type === 'set') {
-      setCompleteDate(date.getTime())
-    }
-    setPickerOpen(false)
+  const closeModal = () => {
+    setCompleteDate(new Date().getTime())
+    props.closeModal()
   }
 
   const saveTaskComplete = () => {
@@ -65,8 +63,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
       lastDone: Math.floor(completeDate / 1000),
     }
     dispatch(completeTask(details))
-    setCompleteDate(new Date().getTime())
-    props.closeModal()
+    closeModal()
   }
 
   const saveTaskDetails = () => {
@@ -80,8 +77,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
       ),
     }
     dispatch(editTask(details))
-    setCompleteDate(new Date().getTime())
-    props.closeModal()
+    closeModal()
   }
 
   const saveDeleteTask = () => {
@@ -92,28 +88,15 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     dispatch(deleteTask(details))
   }
 
-  let picker
-  if (pickerOpen) {
-    picker = (
-      <RNDateTimePicker
-        value={new Date()}
-        onChange={(event, value) => {
-          if (value) {
-            setDate(event, value)
-          }
-        }}
-      />
-    )
-  } else {
-    picker = <></>
+  const setDate = (event: DateTimePickerEvent, date: Date) => {
+    setPickerOpen(false)
+    if (event.type === 'set') {
+      setCompleteDate(date.getTime())
+    }
   }
 
   return (
-    <Modal
-      isOpen={props.open}
-      onClose={() => props.closeModal()}
-      safeAreaTop={true}
-    >
+    <Modal isOpen={props.open} onClose={() => closeModal()} safeAreaTop={true}>
       <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
         <Modal.CloseButton />
         <Modal.Header>{props.task.name}</Modal.Header>
@@ -131,9 +114,19 @@ function TaskInfoModal(props: TaskInfoModalProps) {
                   name: 'calendar',
                 }}
                 onPress={() => {
-                  setPickerOpen(!pickerOpen)
+                  setPickerOpen(true)
                 }}
               ></IconButton>
+              {pickerOpen && (
+                <RNDateTimePicker
+                  value={new Date()}
+                  onChange={(event, value) => {
+                    if (value) {
+                      setDate(event, value)
+                    }
+                  }}
+                />
+              )}
             </HStack>
             <Button
               bg={'green.500'}
@@ -151,7 +144,6 @@ function TaskInfoModal(props: TaskInfoModalProps) {
             setTaskInputs={setTaskInputs}
             delete={saveDeleteTask}
           ></TaskEdit>
-          {picker}
         </Modal.Body>
         <Modal.Footer justifyContent={'center'}>
           <Button
@@ -159,7 +151,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
             colorScheme={'gray'}
             variant={'subtle'}
             onPress={() => {
-              props.closeModal()
+              closeModal()
             }}
           >
             Cancel
