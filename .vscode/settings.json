@@ -1,0 +1,11 @@
+{
+  "prettier.bracketSameLine": false,
+  "prettier.semi": false,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "eslint.alwaysShowStatus": false,
+  "eslint.codeActionsOnSave.rules": null,
+  "eslint.run": "onType"
+}
