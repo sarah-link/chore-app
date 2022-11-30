@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Text } from 'native-base'
+import { Box, Button, HStack, Text, useContrastText } from 'native-base'
 import React, { useState } from 'react'
 import { getColor, getDueText, getIcon } from '../../../utils/taskUIUtils'
 import TaskInfoModal from './TaskInfoModal'
@@ -32,10 +32,15 @@ function TaskButton(props: TaskButtonProps) {
 
   let overdue = isOverdue(dueDate)
   let dueDateTodayDiff = Math.abs(today.diff(dueDate, 'day'))
-
-  let icon = getIcon(dueDate, overdue)
+  let bgColor = getColor(
+    props.task.lastDone,
+    props.task.cycleLengthDays,
+    overdue,
+    dueDateTodayDiff
+  )
+  let icon = getIcon(dueDate, overdue, bgColor)
   let dueText = (
-    <Text fontSize={'xs'}>
+    <Text fontSize={'xs'} color={useContrastText(bgColor)}>
       {getDueText(dueDate, overdue, dueDateTodayDiff)}
     </Text>
   )
@@ -44,17 +49,14 @@ function TaskButton(props: TaskButtonProps) {
     <>
       <Button
         variant={'subtle'}
-        bg={getColor(
-          props.task.lastDone,
-          props.task.cycleLengthDays,
-          overdue,
-          dueDateTodayDiff
-        )}
+        bg={bgColor}
         margin={'5px'}
         onPress={() => setEditModalOpen(true)}
       >
         <Box w={'100%'} alignItems={'center'}>
-          <Text fontSize={'md'}>{props.task.name}</Text>
+          <Text fontSize={'md'} color={useContrastText(bgColor)}>
+            {props.task.name}
+          </Text>
         </Box>
         <HStack alignItems={'center'}>
           <Box paddingRight={1}>{icon}</Box>

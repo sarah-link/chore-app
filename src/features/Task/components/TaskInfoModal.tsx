@@ -12,6 +12,7 @@ import {
   IconButton,
   Modal,
   Text,
+  useContrastText,
 } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -23,6 +24,7 @@ import {
   editTask,
   getLengthInDays,
 } from '../../../store/areasSlice'
+import { getBgColorPrimary, getBgColorSecondary } from '../../../Theme'
 import TaskEdit from './TaskEdit'
 
 export interface TaskInfoModalProps {
@@ -95,11 +97,18 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     }
   }
 
+  let bg = getBgColorSecondary()
+
   return (
     <Modal isOpen={props.open} onClose={() => closeModal()} safeAreaTop={true}>
-      <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
+      <Modal.Content
+        maxWidth='350'
+        marginBottom={'auto'}
+        marginTop={10}
+        bg={bg}
+      >
         <Modal.CloseButton />
-        <Modal.Header>{props.task.name}</Modal.Header>
+        <Modal.Header bg={bg}>{props.task.name}</Modal.Header>
         <Modal.Body>
           <Box marginBottom={4}>
             <Heading size={'sm'}>Date Completed:</Heading>
@@ -112,6 +121,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
                 _icon={{
                   as: AntDesign,
                   name: 'calendar',
+                  color: useContrastText(getBgColorPrimary()),
                 }}
                 onPress={() => {
                   setPickerOpen(true)
@@ -145,7 +155,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
             delete={saveDeleteTask}
           ></TaskEdit>
         </Modal.Body>
-        <Modal.Footer justifyContent={'center'}>
+        <Modal.Footer justifyContent={'center'} bg={bg}>
           <Button
             paddingX={'20'}
             colorScheme={'gray'}

@@ -6,6 +6,7 @@ import {
   IconButton,
   Input,
   Modal,
+  useContrastText,
 } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -14,6 +15,7 @@ import {
   cycleOptions,
   getLengthInDays,
 } from '../../../store/areasSlice'
+import { getBgColorSecondary } from '../../../Theme'
 import { today } from '../../../utils/dateLogic'
 import CycleTimeEditor from './CycleTimeEditor'
 
@@ -56,12 +58,13 @@ function AddTaskModal(props: { areaId: string }) {
   return (
     <>
       <IconButton
-        bg={'gray.100'}
+        bg={getBgColorSecondary()}
         variant={'subtle'}
         margin={'5px'}
         _icon={{
           as: Ionicons,
           name: 'add-circle-outline',
+          color: useContrastText(getBgColorSecondary()),
         }}
         onPress={() => setShowModal(true)}
       />

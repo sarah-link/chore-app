@@ -5,6 +5,7 @@ import AreaView from '../../features/Area/AreaView'
 import AddAreaModal from '../../features/Area/components/AddAreaModal'
 import { getAreas } from '../../store/areas'
 import { addArea } from '../../store/areasSlice'
+import { getBgColorPrimary } from '../../Theme'
 
 function MainView() {
   const dispatch = useDispatch()
@@ -17,7 +18,7 @@ function MainView() {
   return (
     // TODO: figure out why height can't be 100%
     // I think it has to do with the hack to avoid the cutout in App.tsx
-    <ScrollView h={'90%'}>
+    <ScrollView h={'80%'} bg={getBgColorPrimary()}>
       <VStack alignItems={'center'}>
         {areas?.map((value) => (
           <AreaView key={value.id} area={value}></AreaView>

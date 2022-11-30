@@ -1,9 +1,17 @@
-import { Ionicons } from '@expo/vector-icons'
-import { Button, FormControl, IconButton, Input, Modal } from 'native-base'
+import { Feather } from '@expo/vector-icons'
+import {
+  Button,
+  FormControl,
+  IconButton,
+  Input,
+  Modal,
+  useContrastText,
+} from 'native-base'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Area } from '../../../models/areaModels'
 import { deleteArea, editAreaName } from '../../../store/areasSlice'
+import { getBgColorSecondary } from '../../../Theme'
 
 export interface AreaSettingsModalProps {
   area: Area
@@ -25,13 +33,13 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
   return (
     <>
       <IconButton
-        bg={'gray.100'}
         marginLeft={'auto'}
-        variant={'subtle'}
+        variant={'ghost'}
         onPress={() => setOpen(true)}
         _icon={{
-          as: Ionicons,
-          name: 'settings-outline',
+          as: Feather,
+          name: 'edit-3',
+          color: useContrastText(getBgColorSecondary()),
         }}
       />
       <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>

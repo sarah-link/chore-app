@@ -17,7 +17,7 @@ function AddAreaModal(props: AddAreaProps) {
     <>
       <Box w={'50%'} alignSelf={'center'} marginTop={5}>
         <Button
-          colorScheme={'primary'}
+          bg={'primary.600'}
           variant={'subtle'}
           onPress={() => setOpen(true)}
         >

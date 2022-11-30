@@ -1,6 +1,7 @@
 import { Box } from 'native-base'
 import React from 'react'
 import { Area } from '../../models/areaModels'
+import { getBgColorSecondary, getOutlineColor } from '../../Theme'
 import TaskView from '../Task/TaskView'
 import AreaHeading from './components/AreaHeading'
 
@@ -8,8 +9,8 @@ function AreaView(props: { area: Area }) {
   return (
     <Box
       borderRadius='10px'
-      bg='gray.100'
-      borderColor='coolGray.200'
+      borderColor={getOutlineColor()}
+      bg={getBgColorSecondary()}
       w={'95%'}
       borderWidth={1}
       m={'2'}

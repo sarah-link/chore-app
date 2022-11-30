@@ -4,6 +4,7 @@ import {
   ArrowForwardIcon,
   ChevronDownIcon,
   CloseIcon,
+  useContrastText,
 } from 'native-base'
 import React from 'react'
 import { isDueToday } from './dateLogic'
@@ -15,9 +16,6 @@ export const getColor = (
   dueDateTodayDiff: number
 ) => {
   let lastDoneDay = dayjs.unix(lastDone)
-  // TODO: also fix this, uncomment above for real data
-  // let lastDone = dayjs('2022-11-00')
-  let due
   let dueDate = lastDoneDay.add(cycleLengthDays, 'days')
 
   if (isDueToday(dueDate)) {
@@ -56,16 +54,21 @@ export const getDueText = (
   return due
 }
 
-export const getIcon = (dueDate: Dayjs, isOverdue: boolean) => {
+export const getIcon = (
+  dueDate: Dayjs,
+  isOverdue: boolean,
+  bgColor: string
+) => {
+  let color = useContrastText(bgColor)
   if (dueDate.unix() === 21600) {
     //due to stripping the exact time elsewhere
-    return <CloseIcon size='3' />
+    return <CloseIcon size='3' color={color} />
   } else if (isDueToday(dueDate)) {
-    return <ChevronDownIcon size='3' />
+    return <ChevronDownIcon size='3' color={color} />
   } else if (isOverdue) {
-    return <ArrowBackIcon size='3' />
+    return <ArrowBackIcon size='3' color={color} />
   } else {
-    return <ArrowForwardIcon size='3' />
+    return <ArrowForwardIcon size='3' color={color} />
   }
 }
 
