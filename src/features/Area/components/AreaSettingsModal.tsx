@@ -1,4 +1,5 @@
-import { Button, FormControl, HamburgerIcon, Input, Modal } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
+import { Button, FormControl, IconButton, Input, Modal } from 'native-base'
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Area } from '../../../models/areaModels'
@@ -21,17 +22,18 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
   const deleteThisArea = () => {
     dispatch(deleteArea(props.area.id))
   }
-
   return (
     <>
-      <Button
-        bg={'gray.300'}
+      <IconButton
+        bg={'gray.100'}
         marginLeft={'auto'}
         variant={'subtle'}
         onPress={() => setOpen(true)}
-      >
-        <HamburgerIcon />
-      </Button>
+        _icon={{
+          as: Ionicons,
+          name: 'settings-outline',
+        }}
+      />
       <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />

@@ -10,7 +10,7 @@ function TaskView(props: { area: Area }) {
   const tasks = useSelector(getTasksForArea(props.area.id))
 
   return (
-    <HStack bg={'gray.200'} padding={2} flexWrap={'wrap'}>
+    <HStack padding={2} flexWrap={'wrap'}>
       {tasks.map((value) => (
         <TaskButton key={value.id} task={value} areaId={props.area.id} />
       ))}

@@ -1,4 +1,12 @@
-import { Button, Checkbox, FormControl, Input, Modal, Text } from 'native-base'
+import { Ionicons } from '@expo/vector-icons'
+import {
+  Button,
+  Checkbox,
+  FormControl,
+  IconButton,
+  Input,
+  Modal,
+} from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
@@ -47,14 +55,16 @@ function AddTaskModal(props: { areaId: string }) {
 
   return (
     <>
-      <Button
+      <IconButton
         bg={'gray.100'}
         variant={'subtle'}
         margin={'5px'}
+        _icon={{
+          as: Ionicons,
+          name: 'add-circle-outline',
+        }}
         onPress={() => setShowModal(true)}
-      >
-        <Text>+</Text>
-      </Button>
+      />
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
