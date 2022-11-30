@@ -34,7 +34,7 @@ export const getDueText = (
   overdue: boolean,
   dueDateTodayDiff: number
 ) => {
-  let due = 'Due '
+  let due = ''
   if (dueDate.unix() === 21600) {
     //due to stripping the exact time elsewhere
     due = 'No history'
@@ -42,9 +42,9 @@ export const getDueText = (
     due += 'today'
   } else if (dueDateTodayDiff === 1) {
     if (overdue) {
-      due += 'yesterday'
+      due += 'Yesterday'
     } else {
-      due += 'tomorrow'
+      due += 'Tomorrow'
     }
   } else {
     if (overdue) {
