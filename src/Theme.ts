@@ -22,6 +22,10 @@ export const getBgColorSecondary = () => {
   return useColorModeValue('warmGray.100', 'blueGray.800')
 }
 
+export const getBgColorTertiary = () => {
+  return useColorModeValue('warmGray.200', 'blueGray.700')
+}
+
 export const getOutlineColor = () => {
   return useColorModeValue('warmGray.200', 'blueGray.700')
 }

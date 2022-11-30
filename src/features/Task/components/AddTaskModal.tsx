@@ -17,7 +17,7 @@ import {
   cycleOptions,
   getLengthInDays,
 } from '../../../store/areasSlice'
-import { getBgColorSecondary } from '../../../Theme'
+import { getBgColorSecondary, getBgColorTertiary } from '../../../Theme'
 import { today } from '../../../utils/dateLogic'
 import CycleTimeEditor from './CycleTimeEditor'
 
@@ -60,7 +60,13 @@ function AddTaskModal(props: { areaId: string }) {
   return (
     <>
       <IconButton
-        bg={getBgColorSecondary()}
+        borderColor={useContrastText(getBgColorTertiary())}
+        borderWidth='1'
+        borderStyle={'dashed'}
+        h={'12'}
+        w={'12'}
+        alignSelf={'center'}
+        bg={getBgColorTertiary()}
         variant={'subtle'}
         margin={'5px'}
         _icon={{
