@@ -40,9 +40,10 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
   return (
     <>
       <FormControl.Label>Due every:</FormControl.Label>
-      <HStack>
+      <HStack alignItems={'flex-end'}>
         <Input
-          mx='3'
+          h={'12'}
+          textAlign={'center'}
           placeholder={props.taskInputs.cycleTime}
           w='25%'
           value={String(props.taskInputs.cycleTime)}
@@ -58,9 +59,10 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
           }}
         />
         <Select
-          mx='3'
+          h={'12'}
+          marginLeft={'6'}
           selectedValue={cycleOptions[props.taskInputs.cycleOption]}
-          minWidth='150'
+          minWidth='120'
           accessibilityLabel='Choose Service'
           placeholder='Choose Service'
           _selectedItem={{

@@ -1,11 +1,13 @@
 import { Ionicons } from '@expo/vector-icons'
 import {
+  Box,
   Button,
   Checkbox,
   FormControl,
   IconButton,
   Input,
   Modal,
+  Text,
   useContrastText,
 } from 'native-base'
 import React, { useState } from 'react'
@@ -88,18 +90,18 @@ function AddTaskModal(props: { areaId: string }) {
               taskInputs={taskInputs}
               setTaskInputs={setTaskInputs}
             ></CycleTimeEditor>
-            <Checkbox
-              defaultIsChecked
-              value='true'
-              mt={'4'}
-              mx={'4'}
-              size={'md'}
-              onChange={(value) => {
-                setCheck(value)
-              }}
-            >
-              Mark Completed Today
-            </Checkbox>
+            <Box marginTop={'6'}>
+              <Checkbox
+                defaultIsChecked
+                value='true'
+                size={'md'}
+                onChange={(value) => {
+                  setCheck(value)
+                }}
+              >
+                <Text>Mark Completed Today</Text>
+              </Checkbox>
+            </Box>
           </Modal.Body>
           <Modal.Footer justifyContent={'center'}>
             <Button
