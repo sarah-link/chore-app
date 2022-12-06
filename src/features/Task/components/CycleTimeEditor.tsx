@@ -60,11 +60,9 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
         />
         <Select
           h={'12'}
-          marginLeft={'6'}
+          marginLeft={'4'}
           selectedValue={cycleOptions[props.taskInputs.cycleOption]}
           minWidth='120'
-          accessibilityLabel='Choose Service'
-          placeholder='Choose Service'
           _selectedItem={{
             bg: 'teal.600',
             endIcon: <CheckIcon size='5' />,

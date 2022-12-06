@@ -18,7 +18,7 @@ import {
   getLengthInDays,
 } from '../../../store/areasSlice'
 import { getBgColorSecondary, getBgColorTertiary } from '../../../Theme'
-import { today } from '../../../utils/dateLogic'
+import { today } from '../../../utils/dateUtils'
 import CycleTimeEditor from './CycleTimeEditor'
 
 function AddTaskModal(props: { areaId: string }) {
@@ -71,7 +71,7 @@ function AddTaskModal(props: { areaId: string }) {
         margin={'5px'}
         _icon={{
           as: Ionicons,
-          name: 'add-circle-outline',
+          name: 'add',
           color: useContrastText(getBgColorSecondary()),
         }}
         onPress={() => setShowModal(true)}

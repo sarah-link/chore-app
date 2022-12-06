@@ -11,7 +11,7 @@ LogBox.ignoreLogs([
 
 function Home() {
   return (
-    <VStack>
+    <VStack h={'100%'}>
       <Header />
       <MainView />
     </VStack>

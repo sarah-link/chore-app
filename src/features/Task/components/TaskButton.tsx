@@ -10,7 +10,7 @@ import {
   isOverdue,
   stripTime,
   today,
-} from '../../../utils/dateLogic'
+} from '../../../utils/dateUtils'
 
 export interface TaskButtonProps {
   task: Task

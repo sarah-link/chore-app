@@ -1,4 +1,6 @@
-import { NativeBaseProvider, View } from 'native-base'
+import { Box, NativeBaseProvider } from 'native-base'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import Home from './src/components/Home'
@@ -10,10 +12,20 @@ function App() {
     <Provider store={store}>
       <NativeBaseProvider theme={theme}>
         <PersistGate persistor={persistor}>
-          {/* TODO: find a better way to avoid the top bar */}
-          <View bg={'gray'} paddingTop={'45px'}>
-            <Home />
-          </View>
+          <Box
+            // Not sure why the functional approach to color isn't working here
+            _dark={{
+              bg: 'blueGray.900',
+            }}
+            _light={{
+              bg: 'warmGray.50',
+            }}
+          >
+            {/* TODO: change text color */}
+            <SafeAreaView>
+              <Home />
+            </SafeAreaView>
+          </Box>
         </PersistGate>
       </NativeBaseProvider>
     </Provider>
