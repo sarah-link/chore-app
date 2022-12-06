@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs'
+import { Dayjs } from 'dayjs'
 import {
   ArrowBackIcon,
   ArrowForwardIcon,
@@ -7,94 +7,61 @@ import {
   useContrastText,
 } from 'native-base'
 import React from 'react'
-import { isDueToday } from './dateLogic'
+import { CycleOptions } from '../models/CycleOptions'
+import { getDaysUntilDue, getDueDate } from './dateUtils'
 
-export const getColor = (
-  lastDone: number,
-  cycleLengthDays: number,
-  overdue: boolean,
-  dueDateTodayDiff: number
-) => {
-  let lastDoneDay = dayjs.unix(lastDone)
-  let dueDate = lastDoneDay.add(cycleLengthDays, 'days')
+export interface TaskButtonInfo {
+  color: string
+  dueText: string
+  icon: JSX.Element
+}
 
-  if (isDueToday(dueDate)) {
+export const getTaskButtonInfo = (
+  lastDone: Dayjs,
+  cycleQuantity: number,
+  cycleOption: CycleOptions
+): TaskButtonInfo => {
+  let daysUntilDue = getDaysUntilDue(
+    getDueDate(lastDone, cycleQuantity, cycleOption)
+  )
+  return {
+    color: getColor(daysUntilDue),
+    dueText: getDueText(daysUntilDue),
+    icon: getIcon(daysUntilDue),
+  }
+}
+
+export const getColor = (daysUntilDue: number) => {
+  if (daysUntilDue === 0) {
     return 'red.100'
-  } else if (overdue) {
-    return getColorOverdue(dueDateTodayDiff, cycleLengthDays)
-  } else {
-    return getColorNotDue(dueDateTodayDiff, cycleLengthDays)
-  }
-}
-
-export const getDueText = (
-  dueDate: Dayjs,
-  overdue: boolean,
-  dueDateTodayDiff: number
-) => {
-  let due = ''
-  if (dueDate.unix() === 21600) {
-    //due to stripping the exact time elsewhere
-    due = 'No history'
-  } else if (isDueToday(dueDate)) {
-    due += 'today'
-  } else if (dueDateTodayDiff === 1) {
-    if (overdue) {
-      due += 'Yesterday'
-    } else {
-      due += 'Tomorrow'
-    }
-  } else {
-    if (overdue) {
-      due += dueDateTodayDiff.toString() + ' days ago'
-    } else {
-      due += 'in ' + dueDateTodayDiff.toString() + ' days'
-    }
-  }
-  return due
-}
-
-export const getIcon = (
-  dueDate: Dayjs,
-  isOverdue: boolean,
-  bgColor: string
-) => {
-  let color = useContrastText(bgColor)
-  if (dueDate.unix() === 21600) {
-    //due to stripping the exact time elsewhere
-    return <CloseIcon size='3' color={color} />
-  } else if (isDueToday(dueDate)) {
-    return <ChevronDownIcon size='3' color={color} />
-  } else if (isOverdue) {
-    return <ArrowBackIcon size='3' color={color} />
-  } else {
-    return <ArrowForwardIcon size='3' color={color} />
-  }
-}
-
-const getColorOverdue = (daysOverdue: number, cycleLengthDays: number) => {
-  // due today: light red
-  // today-25% of cycle time: medium red
-  // over 25%: dark red
-
-  let factor = (daysOverdue * 1.0) / cycleLengthDays
-  if (factor < 0.25) {
+  } else if (daysUntilDue < 0) {
     return 'red.300'
   } else {
-    return 'red.500'
+    return 'green.200'
   }
 }
 
-const getColorNotDue = (daysUntilDue: number, cycleLengthDays: number) => {
-  // special case if due tomorrow
-  if (daysUntilDue === 1) {
-    return 'green.100'
-  }
-
-  let factor = (daysUntilDue * -1.0) / cycleLengthDays
-  if (factor > 0.25) {
-    return 'green.500'
+export const getDueText = (daysUntilDue: number) => {
+  if (daysUntilDue < -18000) {
+    return 'no history'
+  } else if (daysUntilDue === 0) {
+    return 'due today'
+  } else if (Math.abs(daysUntilDue) === 1) {
+    return '1 day'
   } else {
-    return 'green.300'
+    return Math.abs(daysUntilDue) + ' days'
+  }
+}
+
+export const getIcon = (daysUntilDue: number) => {
+  let c = useContrastText(getColor(daysUntilDue))
+  if (daysUntilDue < -18000) {
+    return <CloseIcon size='3' color={c} />
+  } else if (daysUntilDue === 0) {
+    return <ChevronDownIcon size='3' color={c} />
+  } else if (daysUntilDue < 0) {
+    return <ArrowBackIcon size='3' color={c} />
+  } else {
+    return <ArrowForwardIcon size='3' color={c} />
   }
 }

@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons'
+import dayjs, { Dayjs } from 'dayjs'
 import {
   Box,
   Button,
@@ -12,11 +13,8 @@ import {
 } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import {
-  addTaskToArea,
-  cycleOptions,
-  getLengthInDays,
-} from '../../../store/areasSlice'
+import { CycleOptions } from '../../../models/CycleOptions'
+import { addTaskToArea } from '../../../store/areasSlice'
 import { getBgColorSecondary, getBgColorTertiary } from '../../../Theme'
 import { today } from '../../../utils/dateUtils'
 import CycleTimeEditor from './CycleTimeEditor'
@@ -26,34 +24,36 @@ function AddTaskModal(props: { areaId: string }) {
 
   const addNewTask = (
     name: string,
-    cycleLengthDays: number,
-    lastCompleted: number = 0
+    cycleQuantity: number,
+    cyclceOption: CycleOptions,
+    lastCompleted: Dayjs
   ) => {
     dispatch(
       addTaskToArea({
         areaId: props.areaId,
         taskName: name,
         lastDone: lastCompleted,
-        cycleLengthDays: cycleLengthDays,
+        cycleQuantity: cycleQuantity,
+        cycleOption: cyclceOption,
       })
     )
   }
 
-  const [showModal, setShowModal] = React.useState(false)
-  const [newTaskName, setNewTaskName] = React.useState('')
-  const [isChecked, setCheck] = useState(true)
+  const [showModal, setShowModal] = useState(false)
+  const [newTaskName, setNewTaskName] = useState('')
+  const [completeNowChecked, setCompleteNowChecked] = useState(true)
 
   const [taskInputs, setTaskInputs] = useState({
-    cycleOption: cycleOptions.Days,
-    cycleTime: '1',
+    cycleOption: CycleOptions.Days,
+    cycleQuantity: 1,
     taskName: newTaskName,
   })
 
   const getLastCompleted = () => {
-    if (isChecked) {
-      return today.unix()
+    if (completeNowChecked) {
+      return today
     } else {
-      return 0
+      return dayjs(0)
     }
   }
 
@@ -102,7 +102,7 @@ function AddTaskModal(props: { areaId: string }) {
                 value='true'
                 size={'md'}
                 onChange={(value) => {
-                  setCheck(value)
+                  setCompleteNowChecked(value)
                 }}
               >
                 <Text>Mark Completed Today</Text>
@@ -116,7 +116,8 @@ function AddTaskModal(props: { areaId: string }) {
                 setShowModal(false)
                 addNewTask(
                   newTaskName,
-                  getLengthInDays(taskInputs.cycleOption, taskInputs.cycleTime),
+                  taskInputs.cycleQuantity,
+                  taskInputs.cycleOption,
                   getLastCompleted()
                 )
                 setNewTaskName('')

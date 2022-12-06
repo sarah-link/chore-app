@@ -1,28 +1,34 @@
+import { Dayjs } from 'dayjs'
+import { CycleOptions } from './CycleOptions'
+
 export interface Task {
   id: string
   name: string
-  lastDone: number
-  cycleLengthDays: number
+  lastDone: Dayjs
+  cycleQuantity: number
+  cycleOption: CycleOptions
 }
 
 export interface NewTaskDetails {
   areaId: string
   taskName: string
-  lastDone: number
-  cycleLengthDays: number
+  lastDone: Dayjs
+  cycleQuantity: number
+  cycleOption: CycleOptions
 }
 
 export interface CompleteTaskDetails {
   areaId: string
   taskId: string
-  lastDone: number
+  lastDone: Dayjs
 }
 
 export interface EditTaskDetails {
   areaId: string
   taskId: string
   newName: string
-  cycleLengthDays: number
+  cycleQuantity: number
+  cycleOption: CycleOptions
 }
 
 export interface DeleteTaskDetails {

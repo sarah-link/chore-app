@@ -16,14 +16,9 @@ import {
 } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { CycleOptions } from '../../../models/CycleOptions'
 import { Task } from '../../../models/taskModels'
-import {
-  completeTask,
-  cycleOptions,
-  deleteTask,
-  editTask,
-  getLengthInDays,
-} from '../../../store/areasSlice'
+import { completeTask, deleteTask, editTask } from '../../../store/areasSlice'
 import { getBgColorPrimary, getBgColorSecondary } from '../../../Theme'
 import TaskEdit from './TaskEdit'
 
@@ -35,8 +30,8 @@ export interface TaskInfoModalProps {
 }
 
 export interface TaskInputs {
-  cycleOption: cycleOptions
-  cycleTime: string
+  cycleOption: CycleOptions
+  cycleQuantity: number
   taskName: string
 }
 
@@ -47,8 +42,8 @@ function TaskInfoModal(props: TaskInfoModalProps) {
   const [pickerOpen, setPickerOpen] = useState(false)
   const [completeDate, setCompleteDate] = useState(new Date().getTime())
   const [taskInputs, setTaskInputs] = useState({
-    cycleOption: cycleOptions.Days,
-    cycleTime: String(props.task.cycleLengthDays),
+    cycleOption: props.task.cycleOption,
+    cycleQuantity: props.task.cycleQuantity,
     taskName: props.task.name,
   })
 
@@ -61,22 +56,18 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     let details = {
       areaId: props.areaId,
       taskId: props.task.id,
-      // due to some discrpancy between dayjs (unix time in seconds) and normal-js (unix time in milliseconds)
-      lastDone: Math.floor(completeDate / 1000),
+      lastDone: dayjs(completeDate),
     }
     dispatch(completeTask(details))
     closeModal()
   }
-
   const saveTaskDetails = () => {
     let details = {
       areaId: props.areaId,
       taskId: props.task.id,
       newName: taskInputs.taskName,
-      cycleLengthDays: getLengthInDays(
-        taskInputs.cycleOption,
-        taskInputs.cycleTime
-      ),
+      cycleQuantity: taskInputs.cycleQuantity,
+      cycleOption: taskInputs.cycleOption,
     }
     dispatch(editTask(details))
     closeModal()
