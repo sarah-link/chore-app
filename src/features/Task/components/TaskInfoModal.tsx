@@ -12,6 +12,7 @@ import {
   IconButton,
   Modal,
   Text,
+  useColorModeValue,
   useContrastText,
 } from 'native-base'
 import React, { useState } from 'react'
@@ -148,8 +149,16 @@ function TaskInfoModal(props: TaskInfoModalProps) {
         </Modal.Body>
         <Modal.Footer justifyContent={'center'} bg={bg}>
           <Button
-            paddingX={'20'}
-            colorScheme={'gray'}
+            width={24}
+            _text={{
+              color: useColorModeValue('black', 'white'),
+            }}
+            _dark={{
+              bg: 'gray.500',
+            }}
+            _light={{
+              bg: 'gray.300',
+            }}
             variant={'subtle'}
             onPress={() => {
               closeModal()
@@ -158,7 +167,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
             Cancel
           </Button>
           <Button
-            paddingX={'20'}
+            width={24}
             marginLeft={'auto'}
             onPress={() => {
               saveTaskDetails()
