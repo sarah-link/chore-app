@@ -14,7 +14,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -22,7 +24,8 @@
       "adaptiveIcon": {
         "foregroundImage": "public/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.slink2647.choreapp"
     },
     "web": {
       "favicon": "public/assets/favicon.png"
