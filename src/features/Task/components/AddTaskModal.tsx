@@ -21,6 +21,16 @@ import { today } from '../../../utils/dateUtils'
 import CycleTimeEditor from './CycleTimeEditor'
 
 function AddTaskModal(props: { areaId: string }) {
+  const [showModal, setShowModal] = useState(false)
+  const [newTaskName, setNewTaskName] = useState('')
+  const [completeNowChecked, setCompleteNowChecked] = useState(true)
+  const [nameIsInvalid, setNameIsInvalid] = useState(false)
+
+  const [taskInputs, setTaskInputs] = useState({
+    cycleOption: CycleOptions.Days,
+    cycleQuantity: 1,
+    taskName: newTaskName,
+  })
   const dispatch = useDispatch()
 
   const addNewTask = (
@@ -41,17 +51,6 @@ function AddTaskModal(props: { areaId: string }) {
     )
     closeModal()
   }
-
-  const [showModal, setShowModal] = useState(false)
-  const [newTaskName, setNewTaskName] = useState('')
-  const [completeNowChecked, setCompleteNowChecked] = useState(true)
-  const [nameIsInvalid, setNameIsInvalid] = useState(false)
-
-  const [taskInputs, setTaskInputs] = useState({
-    cycleOption: CycleOptions.Days,
-    cycleQuantity: 1,
-    taskName: newTaskName,
-  })
 
   const getLastCompleted = () => {
     if (completeNowChecked) {

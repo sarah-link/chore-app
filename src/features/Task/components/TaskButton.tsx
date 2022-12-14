@@ -3,9 +3,7 @@ import React, { useState } from 'react'
 import { getTaskButtonInfo } from '../../../utils/taskUIUtils'
 import TaskInfoModal from './TaskInfoModal'
 
-import dayjs from 'dayjs'
 import { Task } from '../../../models/taskModels'
-import { getDueDate } from '../../../utils/dateUtils'
 
 export interface TaskButtonProps {
   task: Task
@@ -13,13 +11,6 @@ export interface TaskButtonProps {
 }
 
 function TaskButton(props: TaskButtonProps) {
-  var relativeTime = require('dayjs/plugin/relativeTime')
-  dayjs.extend(relativeTime)
-  const dueDate = getDueDate(
-    props.task.lastDone,
-    props.task.cycleQuantity,
-    props.task.cycleOption
-  )
   const [editModalOpen, setEditModalOpen] = useState(false)
 
   const closeModal = () => {
