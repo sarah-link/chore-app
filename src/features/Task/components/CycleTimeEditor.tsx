@@ -11,12 +11,10 @@ export interface CycleTimeEditorProps {
 
 function CycleTimeEditor(props: CycleTimeEditorProps) {
   const changeCycleQuantity = (quantity: string) => {
-    if (parseInt(quantity) !== NaN) {
-      props.setTaskInputs((prevState: TaskInputs) => ({
-        ...prevState,
-        cycleQuantity: quantity,
-      }))
-    }
+    props.setTaskInputs((prevState: TaskInputs) => ({
+      ...prevState,
+      cycleQuantity: quantity,
+    }))
   }
 
   const changeCycleOption = (option: string) => {
@@ -29,7 +27,7 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
 
   return (
     <>
-      <FormControl.Label>Due every:</FormControl.Label>
+      <FormControl.Label>Do every:</FormControl.Label>
       <HStack alignItems={'flex-end'}>
         <Input
           h={'12'}

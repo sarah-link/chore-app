@@ -8,10 +8,11 @@ import {
   Icon,
   Input,
   useContrastText,
+  WarningOutlineIcon,
 } from 'native-base'
 import React, { useState } from 'react'
 import { Pressable } from 'react-native'
-import DeleteConfirmation from '../../../components/layout/DeleteConfirmation'
+import DeleteConfirmation from '../../../components/DeleteConfirmation'
 import { Task } from '../../../models/taskModels'
 import { getBgColorPrimary } from '../../../Theme'
 import CycleTimeEditor from './CycleTimeEditor'
@@ -22,6 +23,7 @@ export interface TaskEditProps {
   taskInputs: TaskInputs
   setTaskInputs: any
   delete: () => void
+  nameIsInvalid: boolean
 }
 
 function TaskEdit(props: TaskEditProps) {
@@ -57,12 +59,15 @@ function TaskEdit(props: TaskEditProps) {
         </HStack>
       </Pressable>
       {detailEditOpen && (
-        <FormControl>
+        <FormControl isInvalid={props.nameIsInvalid}>
           <FormControl.Label>Name</FormControl.Label>
           <Input
             value={props.taskInputs.taskName}
             onChangeText={(newName) => changeTaskName(newName)}
           />
+          <FormControl.ErrorMessage leftIcon={<WarningOutlineIcon size='xs' />}>
+            Task name cannot be blank.
+          </FormControl.ErrorMessage>
           <CycleTimeEditor
             taskInputs={props.taskInputs}
             setTaskInputs={props.setTaskInputs}

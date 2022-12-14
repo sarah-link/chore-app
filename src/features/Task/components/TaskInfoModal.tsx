@@ -42,6 +42,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
 
   const [pickerOpen, setPickerOpen] = useState(false)
   const [completeDate, setCompleteDate] = useState(new Date().getTime())
+  const [nameIsInvalid, setNameIsInvalid] = useState(false)
   const [taskInputs, setTaskInputs] = useState({
     cycleOption: props.task.cycleOption,
     cycleQuantity: props.task.cycleQuantity,
@@ -50,6 +51,11 @@ function TaskInfoModal(props: TaskInfoModalProps) {
 
   const closeModal = () => {
     setCompleteDate(new Date().getTime())
+    setNameIsInvalid(false)
+    setTaskInputs((prevState: TaskInputs) => ({
+      ...prevState,
+      taskName: props.task.name,
+    }))
     props.closeModal()
   }
 
@@ -63,6 +69,8 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     closeModal()
   }
   const saveTaskDetails = () => {
+    if (!validateName()) return
+    console.log('name validated')
     let details = {
       areaId: props.areaId,
       taskId: props.task.id,
@@ -72,6 +80,15 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     }
     dispatch(editTask(details))
     closeModal()
+  }
+
+  const validateName = () => {
+    setTaskInputs((prevState: TaskInputs) => ({
+      ...prevState,
+      taskName: taskInputs.taskName.trim(),
+    }))
+    setNameIsInvalid(taskInputs.taskName === '')
+    return !(taskInputs.taskName === '')
   }
 
   const saveDeleteTask = () => {
@@ -145,6 +162,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
             taskInputs={taskInputs}
             setTaskInputs={setTaskInputs}
             delete={saveDeleteTask}
+            nameIsInvalid={nameIsInvalid}
           ></TaskEdit>
         </Modal.Body>
         <Modal.Footer justifyContent={'center'} bg={bg}>

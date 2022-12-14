@@ -6,9 +6,11 @@ import {
   Input,
   Modal,
   useContrastText,
+  WarningOutlineIcon,
 } from 'native-base'
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import DeleteConfirmation from '../../../components/DeleteConfirmation'
 import { Area } from '../../../models/areaModels'
 import { deleteArea, editAreaName } from '../../../store/areasSlice'
 import { getBgColorSecondary } from '../../../Theme'
@@ -18,8 +20,10 @@ export interface AreaSettingsModalProps {
 }
 
 export function AreaSettingsModal(props: AreaSettingsModalProps) {
-  const [open, setOpen] = React.useState(false)
-  const [newAreaName, setNewAreaName] = React.useState(props.area.name)
+  const [open, setOpen] = useState(false)
+  const [newAreaName, setNewAreaName] = useState(props.area.name)
+  const [nameIsInvalid, setNameIsInvalid] = useState(false)
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -27,11 +31,25 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
     dispatch(editAreaName({ id: props.area.id, newName: newAreaName }))
   }
 
+  const validateName = () => {
+    setNewAreaName(newAreaName.trim())
+    setNameIsInvalid(newAreaName.trim() === '')
+    return !(newAreaName.trim() === '')
+  }
+
   const deleteThisArea = () => {
+    setOpen(false)
     dispatch(deleteArea(props.area.id))
   }
+
   return (
     <>
+      <DeleteConfirmation
+        isOpen={deleteConfirmOpen}
+        setIsOpen={setDeleteConfirmOpen}
+        name={props.area.name}
+        onConfirm={deleteThisArea}
+      ></DeleteConfirmation>
       <IconButton
         marginLeft={'auto'}
         variant={'ghost'}
@@ -42,26 +60,37 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
           color: useContrastText(getBgColorSecondary()),
         }}
       />
-      <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
+      <Modal
+        isOpen={open}
+        onClose={() => {
+          setNameIsInvalid(false)
+          setOpen(false)
+        }}
+        safeAreaTop={true}
+      >
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
 
           <Modal.Header>Manage Area</Modal.Header>
           <Modal.Body>
-            <FormControl>
+            <FormControl isInvalid={nameIsInvalid}>
               <FormControl.Label>Area Name</FormControl.Label>
               <Input
                 value={newAreaName}
                 onChangeText={(newName) => setNewAreaName(newName)}
               />
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size='xs' />}
+              >
+                Room name cannot be blank.
+              </FormControl.ErrorMessage>
             </FormControl>
           </Modal.Body>
           <Modal.Footer justifyContent={'flex-start'}>
             <Button
               bg={'red.500'}
               onPress={() => {
-                deleteThisArea()
-                setOpen(false)
+                setDeleteConfirmOpen(true)
               }}
             >
               Delete Area
@@ -70,8 +99,10 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
               paddingX={'20'}
               marginLeft={'auto'}
               onPress={() => {
-                changeName()
-                setOpen(false)
+                if (validateName()) {
+                  changeName()
+                  setOpen(false)
+                }
               }}
             >
               Save

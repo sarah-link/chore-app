@@ -1,16 +1,27 @@
-import { Box, Button, FormControl, Input, Modal, Text } from 'native-base'
-import React from 'react'
+import {
+  Box,
+  Button,
+  FormControl,
+  Input,
+  Modal,
+  Text,
+  WarningOutlineIcon,
+} from 'native-base'
+import React, { useState } from 'react'
 
 export interface AddAreaProps {
   saveNewArea: (newAreaName: string) => void
 }
 
 function AddAreaModal(props: AddAreaProps) {
-  const [open, setOpen] = React.useState(false)
-  const [newAreaName, setNewAreaName] = React.useState('')
+  const [open, setOpen] = useState(false)
+  const [newAreaName, setNewAreaName] = useState('')
+  const [nameIsInvalid, setNameIsInvalid] = useState(false)
 
-  const openModal = () => {
-    setOpen(true)
+  const validateName = () => {
+    setNewAreaName(newAreaName.trim())
+    setNameIsInvalid(newAreaName.trim() === '')
+    return !(newAreaName.trim() === '')
   }
 
   return (
@@ -21,29 +32,44 @@ function AddAreaModal(props: AddAreaProps) {
           variant={'subtle'}
           onPress={() => setOpen(true)}
         >
-          <Text>New Area</Text>
+          <Text>New Room</Text>
         </Button>
       </Box>
-      <Modal isOpen={open} onClose={() => setOpen(false)} safeAreaTop={true}>
+      <Modal
+        isOpen={open}
+        onClose={() => {
+          setNameIsInvalid(false)
+          setOpen(false)
+        }}
+        safeAreaTop={true}
+      >
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
-          <Modal.Header>Add Area</Modal.Header>
+          <Modal.Header>Add Room</Modal.Header>
           <Modal.Body>
-            <FormControl isRequired>
-              <FormControl.Label>Name</FormControl.Label>
+            <FormControl isRequired isInvalid={nameIsInvalid}>
+              <FormControl.Label>Room Name</FormControl.Label>
               <Input
                 value={newAreaName}
+                placeholder={'Name'}
                 onChangeText={(newName) => setNewAreaName(newName)}
               />
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size='xs' />}
+              >
+                Room name cannot be blank.
+              </FormControl.ErrorMessage>
             </FormControl>
           </Modal.Body>
           <Modal.Footer justifyContent={'center'}>
             <Button
               paddingX={'20'}
               onPress={() => {
-                props.saveNewArea(newAreaName)
-                setNewAreaName('')
-                setOpen(false)
+                if (validateName()) {
+                  props.saveNewArea(newAreaName)
+                  setNewAreaName('')
+                  setOpen(false)
+                }
               }}
             >
               Save

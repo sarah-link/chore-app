@@ -1,6 +1,6 @@
 import { AlertDialog, Button, Text, useColorModeValue } from 'native-base'
 import React, { Dispatch, SetStateAction } from 'react'
-import { getBgColorPrimary } from '../../Theme'
+import { getBgColorPrimary } from '../Theme'
 
 interface DeleteConfirmationProps {
   isOpen: boolean
@@ -12,6 +12,7 @@ interface DeleteConfirmationProps {
 function DeleteConfirmation(props: DeleteConfirmationProps) {
   const onConfirm = () => props.onConfirm()
   const onCancel = () => props.setIsOpen(false)
+  // TODO: learn about this
   const cancelRef = React.useRef(null)
 
   let bg = getBgColorPrimary()

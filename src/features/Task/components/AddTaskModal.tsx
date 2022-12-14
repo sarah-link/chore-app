@@ -10,6 +10,7 @@ import {
   Modal,
   Text,
   useContrastText,
+  WarningOutlineIcon,
 } from 'native-base'
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
@@ -28,6 +29,7 @@ function AddTaskModal(props: { areaId: string }) {
     cyclceOption: CycleOptions,
     lastCompleted: Dayjs
   ) => {
+    if (!validateName()) return
     dispatch(
       addTaskToArea({
         areaId: props.areaId,
@@ -37,11 +39,13 @@ function AddTaskModal(props: { areaId: string }) {
         cycleOption: cyclceOption,
       })
     )
+    closeModal()
   }
 
   const [showModal, setShowModal] = useState(false)
   const [newTaskName, setNewTaskName] = useState('')
   const [completeNowChecked, setCompleteNowChecked] = useState(true)
+  const [nameIsInvalid, setNameIsInvalid] = useState(false)
 
   const [taskInputs, setTaskInputs] = useState({
     cycleOption: CycleOptions.Days,
@@ -55,6 +59,18 @@ function AddTaskModal(props: { areaId: string }) {
     } else {
       return dayjs(0)
     }
+  }
+
+  const closeModal = () => {
+    setNameIsInvalid(false)
+    setShowModal(false)
+    setNewTaskName('')
+  }
+
+  const validateName = () => {
+    setNewTaskName(newTaskName.trim())
+    setNameIsInvalid(newTaskName.trim() === '')
+    return !(newTaskName.trim() === '')
   }
 
   return (
@@ -76,21 +92,22 @@ function AddTaskModal(props: { areaId: string }) {
         }}
         onPress={() => setShowModal(true)}
       />
-      <Modal
-        isOpen={showModal}
-        onClose={() => setShowModal(false)}
-        safeAreaTop={true}
-      >
+      <Modal isOpen={showModal} onClose={() => closeModal()} safeAreaTop={true}>
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
           <Modal.Header>Add Task</Modal.Header>
           <Modal.Body>
-            <FormControl isRequired>
+            <FormControl isRequired isInvalid={nameIsInvalid}>
               <FormControl.Label>Name</FormControl.Label>
               <Input
                 value={newTaskName}
                 onChangeText={(newName) => setNewTaskName(newName)}
               />
+              <FormControl.ErrorMessage
+                leftIcon={<WarningOutlineIcon size='xs' />}
+              >
+                Task name cannot be blank.
+              </FormControl.ErrorMessage>
             </FormControl>
             <CycleTimeEditor
               taskInputs={taskInputs}
@@ -113,14 +130,12 @@ function AddTaskModal(props: { areaId: string }) {
             <Button
               paddingX={'20'}
               onPress={() => {
-                setShowModal(false)
                 addNewTask(
                   newTaskName,
                   taskInputs.cycleQuantity,
                   taskInputs.cycleOption,
                   getLastCompleted()
                 )
-                setNewTaskName('')
               }}
             >
               Save
