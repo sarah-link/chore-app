@@ -20,8 +20,10 @@ function AddAreaModal(props: AddAreaProps) {
 
   const validateName = () => {
     setNewAreaName(newAreaName.trim())
-    setNameIsInvalid(newAreaName.trim() === '')
-    return !(newAreaName.trim() === '')
+    const nameIsValid = newAreaName.trim() !== ''
+    setNameIsInvalid(!nameIsValid)
+
+    return nameIsValid
   }
 
   return (

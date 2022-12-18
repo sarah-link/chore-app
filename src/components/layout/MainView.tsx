@@ -16,15 +16,13 @@ function MainView() {
   }
 
   return (
-    // TODO: figure out why height can't be 100%
-    // I think it has to do with the hack to avoid the cutout in App.tsx
     <ScrollView bg={getBgColorPrimary()}>
       <VStack alignItems={'center'}>
         {areas?.map((value) => (
-          <AreaView key={value.id} area={value}></AreaView>
+          <AreaView key={value.id} area={value} />
         ))}
         <AddAreaModal saveNewArea={addNewArea} />
-        <Box h={'5'}></Box>
+        <Box h={'5'} />
       </VStack>
     </ScrollView>
   )

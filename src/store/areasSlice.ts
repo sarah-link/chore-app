@@ -10,6 +10,8 @@ import {
 } from '../models/taskModels'
 import { normalizeDate, today } from '../utils/dateUtils'
 
+// TODO: Handle cases in reducer functions where matching task isn't found
+
 export const areasSlice = createSlice({
   name: 'areasState',
   initialState: {
@@ -41,14 +43,14 @@ export const areasSlice = createSlice({
       state.areas = state.areas.filter((area) => area.id !== action.payload)
     },
     editAreaName: (state, action: PayloadAction<RenameAreaDetails>) => {
-      let area = state.areas.find((area) => area.id === action.payload.id)
+      const area = state.areas.find((area) => area.id === action.payload.id)
       if (area) {
         area.name = action.payload.newName
       }
     },
     addTaskToArea: (state, action: PayloadAction<NewTaskDetails>) => {
-      let p = action.payload
-      let area = state.areas.find((area) => area.id === p.areaId)
+      const p = action.payload
+      const area = state.areas.find((area) => area.id === p.areaId)
       area?.tasks.push({
         id: uuid.v4() as string,
         name: p.taskName,
@@ -58,8 +60,8 @@ export const areasSlice = createSlice({
       })
     },
     completeTask: (state, action: PayloadAction<CompleteTaskDetails>) => {
-      let p = action.payload
-      let task = state.areas
+      const p = action.payload
+      const task = state.areas
         .find((area) => area.id === p.areaId)
         ?.tasks.find((task) => task.id === p.taskId)
       if (task) {
@@ -67,8 +69,8 @@ export const areasSlice = createSlice({
       }
     },
     editTask: (state, action: PayloadAction<EditTaskDetails>) => {
-      let p = action.payload
-      let task = state.areas
+      const p = action.payload
+      const task = state.areas
         .find((area) => area.id === p.areaId)
         ?.tasks.find((task) => task.id === p.taskId)
       if (task) {
@@ -78,7 +80,7 @@ export const areasSlice = createSlice({
       }
     },
     deleteTask: (state, action: PayloadAction<DeleteTaskDetails>) => {
-      let area = state.areas.find((area) => area.id === action.payload.areaId)
+      const area = state.areas.find((area) => area.id === action.payload.areaId)
       if (area) {
         area.tasks = area.tasks.filter(
           (task) => task.id !== action.payload.taskId

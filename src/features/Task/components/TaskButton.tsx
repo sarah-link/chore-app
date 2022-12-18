@@ -27,8 +27,8 @@ function TaskButton(props: TaskButtonProps) {
     <>
       <Button
         variant={'subtle'}
-        bg={color}
         margin={'5px'}
+        bg={color}
         onPress={() => setEditModalOpen(true)}
       >
         <Box w={'100%'} alignItems={'center'}>
@@ -46,7 +46,7 @@ function TaskButton(props: TaskButtonProps) {
         closeModal={closeModal}
         task={props.task}
         areaId={props.areaId}
-      ></TaskInfoModal>
+      />
     </>
   )
 }

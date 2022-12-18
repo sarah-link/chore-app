@@ -50,4 +50,3 @@ export const normalizeDate = (date: Dayjs) => {
 }
 
 export const today = normalizeDate(dayjs())
-// export const today = dayjs('2022-11-07')

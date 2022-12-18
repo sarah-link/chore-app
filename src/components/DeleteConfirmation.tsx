@@ -39,12 +39,7 @@ function DeleteConfirmation(props: DeleteConfirmationProps) {
             _text={{
               color: useColorModeValue('black', 'white'),
             }}
-            _dark={{
-              bg: 'gray.500',
-            }}
-            _light={{
-              bg: 'gray.300',
-            }}
+            bg={useColorModeValue('gray.300', 'gray.500')}
             onPress={() => onCancel()}
           >
             Cancel

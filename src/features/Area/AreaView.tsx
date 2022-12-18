@@ -8,12 +8,12 @@ import AreaHeading from './components/AreaHeading'
 function AreaView(props: { area: Area }) {
   return (
     <Box
+      w={'95%'}
+      m={'2'}
+      bg={getBgColorSecondary()}
       borderRadius='10px'
       borderColor={getOutlineColor()}
-      bg={getBgColorSecondary()}
-      w={'95%'}
       borderWidth={1}
-      m={'2'}
     >
       <AreaHeading area={props.area} />
       <TaskView area={props.area} />

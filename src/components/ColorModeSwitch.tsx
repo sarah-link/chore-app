@@ -1,9 +1,8 @@
-import { Box, Switch, useColorMode, useColorModeValue } from 'native-base'
+import { Box, Switch, useColorMode } from 'native-base'
 import React, { useState } from 'react'
 
 function ColorModeSwitch() {
   const { colorMode, toggleColorMode } = useColorMode()
-  const text = useColorModeValue('Light', 'Dark')
   const [isEnabled, setIsEnabled] = useState(false)
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState)
@@ -11,8 +10,8 @@ function ColorModeSwitch() {
   }
 
   return (
-    <Box paddingRight={'5'}>
-      <Switch onValueChange={toggleSwitch} value={isEnabled}></Switch>
+    <Box paddingRight={'5'} position={'absolute'} right={'0'}>
+      <Switch onValueChange={toggleSwitch} value={isEnabled} />
     </Box>
   )
 }

@@ -40,6 +40,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
   const dispatch = useDispatch()
   dayjs().format()
 
+  // TODO: combine states or use form management library
   const [pickerOpen, setPickerOpen] = useState(false)
   const [completeDate, setCompleteDate] = useState(new Date().getTime())
   const [nameIsInvalid, setNameIsInvalid] = useState(false)
@@ -69,26 +70,29 @@ function TaskInfoModal(props: TaskInfoModalProps) {
     closeModal()
   }
   const saveTaskDetails = () => {
-    if (!validateName()) return
-    console.log('name validated')
-    let details = {
-      areaId: props.areaId,
-      taskId: props.task.id,
-      newName: taskInputs.taskName,
-      cycleQuantity: taskInputs.cycleQuantity,
-      cycleOption: taskInputs.cycleOption,
+    if (validateName()) {
+      let details = {
+        areaId: props.areaId,
+        taskId: props.task.id,
+        newName: taskInputs.taskName,
+        cycleQuantity: taskInputs.cycleQuantity,
+        cycleOption: taskInputs.cycleOption,
+      }
+      dispatch(editTask(details))
+      closeModal()
     }
-    dispatch(editTask(details))
-    closeModal()
   }
 
   const validateName = () => {
+    const trimmedTaskName = taskInputs.taskName.trim()
     setTaskInputs((prevState: TaskInputs) => ({
       ...prevState,
-      taskName: taskInputs.taskName.trim(),
+      taskName: trimmedTaskName,
     }))
-    setNameIsInvalid(taskInputs.taskName === '')
-    return !(taskInputs.taskName === '')
+    const nameIsValid = trimmedTaskName !== ''
+    setNameIsInvalid(!nameIsValid)
+
+    return nameIsValid
   }
 
   const saveDeleteTask = () => {
@@ -135,7 +139,7 @@ function TaskInfoModal(props: TaskInfoModalProps) {
                 onPress={() => {
                   setPickerOpen(true)
                 }}
-              ></IconButton>
+              />
               {pickerOpen && (
                 <RNDateTimePicker
                   value={new Date()}
@@ -156,14 +160,14 @@ function TaskInfoModal(props: TaskInfoModalProps) {
               {'Mark Complete'}
             </Button>
           </Box>
-          <Divider my={4}></Divider>
+          <Divider my={4} />
           <TaskEdit
             task={props.task}
             taskInputs={taskInputs}
             setTaskInputs={setTaskInputs}
             delete={saveDeleteTask}
             nameIsInvalid={nameIsInvalid}
-          ></TaskEdit>
+          />
         </Modal.Body>
         <Modal.Footer justifyContent={'center'} bg={bg}>
           <Button

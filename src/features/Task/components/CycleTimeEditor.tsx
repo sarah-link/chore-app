@@ -31,10 +31,10 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
       <HStack alignItems={'flex-end'}>
         <Input
           h={'12'}
+          w={'25%'}
           keyboardType={'numeric'}
           textAlign={'center'}
           placeholder={props.taskInputs.cycleQuantity.toString()}
-          w='25%'
           value={String(props.taskInputs.cycleQuantity)}
           onChangeText={(newValue) => {
             changeCycleQuantity(newValue)
@@ -42,14 +42,14 @@ function CycleTimeEditor(props: CycleTimeEditorProps) {
         />
         <Select
           h={'12'}
+          minWidth={'120'}
+          mt={1}
           marginLeft={'4'}
           selectedValue={CycleOptions[props.taskInputs.cycleOption]}
-          minWidth='120'
           _selectedItem={{
             bg: 'teal.600',
             endIcon: <CheckIcon size='5' />,
           }}
-          mt={1}
           onValueChange={(itemValue) => changeCycleOption(itemValue)}
         >
           <Select.Item label='Days' value={CycleOptions[CycleOptions.Days]} />

@@ -33,8 +33,10 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
 
   const validateName = () => {
     setNewAreaName(newAreaName.trim())
-    setNameIsInvalid(newAreaName.trim() === '')
-    return !(newAreaName.trim() === '')
+    const nameIsValid = newAreaName.trim() !== ''
+    setNameIsInvalid(!nameIsValid)
+
+    return nameIsValid
   }
 
   const deleteThisArea = () => {
@@ -49,7 +51,7 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
         setIsOpen={setDeleteConfirmOpen}
         name={props.area.name}
         onConfirm={deleteThisArea}
-      ></DeleteConfirmation>
+      />
       <IconButton
         marginLeft={'auto'}
         variant={'ghost'}
@@ -71,10 +73,10 @@ export function AreaSettingsModal(props: AreaSettingsModalProps) {
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
 
-          <Modal.Header>Manage Area</Modal.Header>
+          <Modal.Header>Manage Room</Modal.Header>
           <Modal.Body>
             <FormControl isInvalid={nameIsInvalid}>
-              <FormControl.Label>Area Name</FormControl.Label>
+              <FormControl.Label>Room Name</FormControl.Label>
               <Input
                 value={newAreaName}
                 onChangeText={(newName) => setNewAreaName(newName)}

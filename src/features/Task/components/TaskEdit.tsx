@@ -46,7 +46,7 @@ function TaskEdit(props: TaskEditProps) {
         setIsOpen={setDeleteConfirmOpen}
         name={props.task.name}
         onConfirm={props.delete}
-      ></DeleteConfirmation>
+      />
       <Pressable onPress={() => setDetailEditOpen(!detailEditOpen)}>
         <HStack justifyContent={'space-between'}>
           <Heading size={'sm'}>Edit Details</Heading>
@@ -71,7 +71,7 @@ function TaskEdit(props: TaskEditProps) {
           <CycleTimeEditor
             taskInputs={props.taskInputs}
             setTaskInputs={props.setTaskInputs}
-          ></CycleTimeEditor>
+          />
           <Box pt={6}>
             <Button
               _dark={{

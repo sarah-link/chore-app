@@ -21,16 +21,17 @@ import { today } from '../../../utils/dateUtils'
 import CycleTimeEditor from './CycleTimeEditor'
 
 function AddTaskModal(props: { areaId: string }) {
+  // TODO: combine some of these states or use a form management library
   const [showModal, setShowModal] = useState(false)
   const [newTaskName, setNewTaskName] = useState('')
   const [completeNowChecked, setCompleteNowChecked] = useState(true)
   const [nameIsInvalid, setNameIsInvalid] = useState(false)
-
   const [taskInputs, setTaskInputs] = useState({
     cycleOption: CycleOptions.Days,
     cycleQuantity: 1,
     taskName: newTaskName,
   })
+
   const dispatch = useDispatch()
 
   const addNewTask = (
@@ -39,17 +40,18 @@ function AddTaskModal(props: { areaId: string }) {
     cyclceOption: CycleOptions,
     lastCompleted: Dayjs
   ) => {
-    if (!validateName()) return
-    dispatch(
-      addTaskToArea({
-        areaId: props.areaId,
-        taskName: name,
-        lastDone: lastCompleted,
-        cycleQuantity: cycleQuantity,
-        cycleOption: cyclceOption,
-      })
-    )
-    closeModal()
+    if (validateName()) {
+      dispatch(
+        addTaskToArea({
+          areaId: props.areaId,
+          taskName: name,
+          lastDone: lastCompleted,
+          cycleQuantity: cycleQuantity,
+          cycleOption: cyclceOption,
+        })
+      )
+      closeModal()
+    }
   }
 
   const getLastCompleted = () => {
@@ -68,22 +70,23 @@ function AddTaskModal(props: { areaId: string }) {
 
   const validateName = () => {
     setNewTaskName(newTaskName.trim())
-    setNameIsInvalid(newTaskName.trim() === '')
-    return !(newTaskName.trim() === '')
+    const nameIsValid = newTaskName.trim() !== ''
+    setNameIsInvalid(!nameIsValid)
+    return nameIsValid
   }
 
   return (
     <>
       <IconButton
+        h={'12'}
+        w={'12'}
+        m={'5px'}
+        bg={getBgColorTertiary()}
         borderColor={useContrastText(getBgColorTertiary())}
         borderWidth='1'
         borderStyle={'dashed'}
-        h={'12'}
-        w={'12'}
         alignSelf={'center'}
-        bg={getBgColorTertiary()}
         variant={'subtle'}
-        margin={'5px'}
         _icon={{
           as: Ionicons,
           name: 'add',
@@ -91,7 +94,7 @@ function AddTaskModal(props: { areaId: string }) {
         }}
         onPress={() => setShowModal(true)}
       />
-      <Modal isOpen={showModal} onClose={() => closeModal()} safeAreaTop={true}>
+      <Modal safeAreaTop isOpen={showModal} onClose={() => closeModal()}>
         <Modal.Content maxWidth='350' marginBottom={'auto'} marginTop={10}>
           <Modal.CloseButton />
           <Modal.Header>Add Task</Modal.Header>
@@ -111,12 +114,12 @@ function AddTaskModal(props: { areaId: string }) {
             <CycleTimeEditor
               taskInputs={taskInputs}
               setTaskInputs={setTaskInputs}
-            ></CycleTimeEditor>
+            />
             <Box marginTop={'6'}>
               <Checkbox
                 defaultIsChecked
-                value='true'
                 size={'md'}
+                value='true'
                 onChange={(value) => {
                   setCompleteNowChecked(value)
                 }}
