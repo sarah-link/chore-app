@@ -1,28 +1,26 @@
 {
   "expo": {
-    "name": "chore-app",
+    "name": "Chores",
     "slug": "chore-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./public/assets/icon.png",
+    "icon": "./public/assets/chore_icon_round.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./public/assets/splash.png",
+      "image": "./public/assets/chore_icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#fafaf9"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "public/assets/adaptive-icon.png",
+        "foregroundImage": "public/assets/chore_icon_round.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.slink2647.choreapp"
